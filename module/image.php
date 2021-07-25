@@ -47,6 +47,7 @@
             $path = IMG_SMALL.translit($_FILES['userfile']['name']);
             $type = explode('/', $_FILES['userfile']['type'])[1];
             changeImage(150, 150, $_FILES['userfile']['tmp_name'], $path, $type);
+            $message = 'Файл загружен успешно!';
           } else {$message = 'Ошибка загрузки файла!';}
       } else {
         $message = 'Не правильный тип файла!';
