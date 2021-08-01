@@ -33,7 +33,6 @@
    }
 
   if (isset($_POST['send'])) {
-    echo $IMG_BIG." ".$IMG_SMALL;
     if ($_FILES['userfile']['error']) {
       $message = 'Ошибка загрузки файла!';
     } elseif ($_FILES['userfile']['size'] > 1000000) {
@@ -44,9 +43,11 @@
         $_FILES['userfile']['type'] == 'image/gif'
       ) {
           if (copy($_FILES['userfile']['tmp_name'], IMG_BIG.translit($_FILES['userfile']['name']))) {
-            $path = IMG_SMALL.translit($_FILES['userfile']['name']);
+            $path = translit($_FILES['userfile']['name']);
             $type = explode('/', $_FILES['userfile']['type'])[1];
-            changeImage(150, 150, $_FILES['userfile']['tmp_name'], $path, $type);
+            changeImage(150, 150, $_FILES['userfile']['tmp_name'], IMG_SMALL.$path, $type);
+            $sqlInsert = "INSERT INTO `images` (`path`, `size`, `name`) VALUES ('".$path."', '".$_FILES['userfile']['size']."', '".$_FILES['userfile']['name']."')";
+            $sqlRun = mysqli_query($connect, $sqlInsert);
             $message = 'Файл загружен успешно!';
           } else {$message = 'Ошибка загрузки файла!';}
       } else {
